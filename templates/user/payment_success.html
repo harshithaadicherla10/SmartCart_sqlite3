@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Successful</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="payment-success-page">
+
+<div class="success-card">
+<h2 style="color:green;">✔ Payment Successful!</h2>
+
+<p><strong>Payment ID:</strong> {{ payment_id }}</p>
+<p><strong>Order ID:</strong> {{ order_id }}</p>
+
+<a href="/user/products" class="continue-shopping-btn">Continue Shopping</a>
+</div>
+
+</body>
+</html>

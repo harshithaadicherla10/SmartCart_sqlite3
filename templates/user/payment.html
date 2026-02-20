@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+        <style>
+        html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #3f3fdc;
+}
+
+.payment-page {
+    background: url('/static/images/background-img.jpg') center/cover no-repeat;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 20px 40px 20px; /* top for navbar */
+}
+
+
+/* PAYMENT CARD */
+.payment-card {
+    background: rgba(255,255,255,0.95);
+    padding: 50px 60px;
+    border-radius: 25px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+    max-width: 550px;
+    width: 100%;
+}
+
+.payment-card h2 {
+    color: #4e73df;
+    margin-bottom: 15px;
+}
+
+.payment-card p {
+    font-size: 18px;
+    margin-bottom: 35px;
+}
+
+/* BUTTONS */
+.pay-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 40px;
+    background: linear-gradient(90deg, #ff7a00, #ff9900);
+    color: white;
+    font-weight: 600;
+    margin-bottom: 10px;
+    transition: 0.3s ease;
+}
+
+.pay-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(185, 102, 39, 0.2);
+}
+
+/* BACK BUTTON */
+.back-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border-radius: 40px;
+    background: linear-gradient(90deg, #4e73df, #764ba2);
+    color: white;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.back-btn:hover {
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(174, 66, 213, 0.2);
+}
+
+/* FOOTER */
+        .footer {
+            background: #3f3fdc;
+            color: white;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+          padding: 30px 0;
+          margin-top: 80px;
+        }
+
+        
+.footer-link {
+  color: rgba(255,255,255,0.75);
+  margin: 0 10px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.footer-links {
+  margin-bottom: 8px;
+}
+
+.footer-link:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.footer .small {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+        
+/* Remove border */
+.navbar-toggler {
+    border: none !important;
+    transition: background-color 0.3s ease;
+    padding: 6px 10px;
+    border-radius: 6px;   /* Slight rounded look */
+}
+
+/* Remove blue outline */
+.navbar-toggler:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Default icon color (dark) */
+.custom-toggler .navbar-toggler-icon {
+    filter: invert(28%) sepia(23%) saturate(800%) hue-rotate(100deg);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%232d6a4f' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* 🔥 When menu is open → background green */
+.custom-toggler[aria-expanded="true"] {
+    background-color: rgb(136, 157, 218);
+}
+
+/* When open → make icon white for contrast */
+.custom-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%231b4332' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.cart-badge {
+  background: #5f5fff;   
+  color: white;
+  font-size: 12px;
+  padding: 4px 7px;
+  border-radius: 50px;
+  margin-left: 6px;
+  font-weight: 600;
+}
+
+/* navbar brand and icon */
+.navbar-brand {
+  font-size: 22px;
+  letter-spacing: 0.5px;
+}
+
+.brand-icon {
+  font-size: 26px;
+  color: #ffcc4d;   /* softer gold */
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover .brand-icon {
+  transform: rotate(-10deg) scale(1.1);
+}
+
+</style>
+
+</head>
+<body class="payment-page">
+
+
+    <!-- =============== NAVBAR ========================-->
+    <nav class="navbar navbar-expand-lg amazon-top-nav fixed-top">
+        <div class="container-fluid px-4">
+
+           <!-- Logo -->
+      <a class="navbar-brand fw-bold text-white d-flex align-items-center" href="/user/products">
+    <i class="bi bi-basket-fill me-2 brand-icon"></i>
+    SmartCart
+</a>
+
+            <!-- Toggle Button (Mobile) -->
+            <button class="navbar-toggler custom-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+
+            <!-- Collapsible Content -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+
+                <ul class="navbar-nav align-items-lg-center gap-lg-3 mt-3 mt-lg-0">
+                    <!-- Dashboard -->
+                    <li class="nav-item">
+                        <a href="/user-dashboard" class="nav-link text-white fw-semibold">
+                            Dashboard
+                        </a>
+                    </li>
+                    <!-- Products -->
+          <li class="nav-item">
+            <a href="/user/products" class="nav-link text-white fw-semibold">
+              <i class="bi bi-box-seam-fill"></i> Products
+            </a>
+          </li>
+
+          <!-- Cart -->
+          <li class="nav-item">
+            <a href="/user/cart" class="nav-link text-white fw-semibold">
+              <i class="bi bi-cart-fill"></i> 
+              <span class="cart-text">Cart</span>
+              <span class="cart-badge ms-1">
+                {% set cart_key = 'cart_' ~ session.get('user_id') %}
+                {% set user_cart = session.get(cart_key, {}) %}
+                {{ user_cart|length }}
+              </span>
+            </a>
+          </li>
+
+          <!-- Orders -->
+          <li class="nav-item">
+            <a href="/user/my-orders" class="nav-link text-white">
+              <i class="bi bi-receipt"></i> My Orders
+            </a>
+          </li>
+
+          <!-- Logout -->
+          <li class="nav-item">
+            <a href="/user-logout" class="btn btn-sm btn-danger rounded-2 ms-lg-2">
+              Logout
+            </a>
+          </li>
+
+        </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- =================== Main Content ==================== -->
+<div class="main-content">
+<div class="payment-container">  
+<div class="payment-card">
+<h2 >Complete Your Payment</h2>
+<br>
+<p class="text-center">Total Amount: <strong>₹{{ amount }}</strong> </p>
+
+<br>
+
+<button id="rzp-button" class="pay-btn">Pay Now</button>
+
+<a href="/user-dashboard" class="back-btn">
+                Back to Dashboard
+            </a>
+  
+<!-- Razorpay Checkout Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+var options = {
+    "key": "{{ key_id }}",
+    "amount": "{{ amount * 100 }}",
+    "currency": "INR",
+    "name": "SmartCart",
+    "description": "Order Payment",
+    "order_id": "{{ order_id }}",
+    "handler": function (response){
+        // Build a small form and POST to server for verification
+        var form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/verify-payment";
+
+        var fields = {
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature
+        };
+
+        for (var name in fields) {
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = name;
+            input.value = fields[name];
+            form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    },
+    "prefill": {
+        // optionally prefill user info
+    }
+};
+
+var rzp = new Razorpay(options);
+document.getElementById('rzp-button').onclick = function(e){
+    rzp.open();
+    e.preventDefault();
+}
+</script>
+
+</div>
+</div>
+</div>
+
+
+    <!-- Footer section -->
+
+      <footer class="footer">
+  <div class="container text-center">
+
+    <div class="mb-2">
+      <strong>SmartCart</strong> – Your Smart Shopping Partner
+    </div>
+
+    <!-- <div class="footer-links mb-2">
+      <a href="#" class="footer-link">About</a>
+      <a href="#" class="footer-link">Contact</a>
+      <a href="#" class="footer-link">Privacy Policy</a>
+    </div> -->
+
+    <div class="small">
+      © 2026 Harshitha Adicherla | All Rights Reserved
+    </div>
+
+  </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+
+</body>
+</html>

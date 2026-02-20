@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <style>
+    .amazon-top-nav {
+      background-color: #3e40e4;
+    }
+
+    footer h4 {
+      font-size: 0.8rem;
+      margin-bottom: 0;
+      padding: 8px;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-content {
+  flex: 1;
+  background: url('/static/images/background-img.jpg') center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+    }
+
+    
+/* footer */
+    .footer {
+  background: #3f3fdc;
+  color: white;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.footer-link {
+  color: rgba(255,255,255,0.75);
+  margin: 0 10px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.footer-links {
+  margin-bottom: 8px;
+}
+
+.footer-link:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.footer .small {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+
+      /* navbar-toggler */
+.navbar-toggler {
+    border: none !important;
+    transition: background-color 0.3s ease;
+    padding: 6px 10px;
+    border-radius: 6px;   /* Slight rounded look */
+}
+
+/* Remove blue outline */
+.navbar-toggler:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Default icon color (dark) */
+.custom-toggler .navbar-toggler-icon {
+    filter: invert(28%) sepia(23%) saturate(800%) hue-rotate(100deg);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%232d6a4f' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* 🔥 When menu is open → background green */
+.custom-toggler[aria-expanded="true"] {
+    background-color: rgb(136, 157, 218);
+}
+
+/* When open → make icon white for contrast */
+.custom-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%231b4332' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* navbar brand and icon */
+  
+.navbar-brand {
+  font-size: 22px;
+  letter-spacing: 0.5px;
+}
+
+.brand-icon {
+  font-size: 26px;
+  color: #ffcc4d;   /* softer gold */
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover .brand-icon {
+  transform: rotate(-10deg) scale(1.1);
+}
+
+
+  </style>
+</head>
+<body class="user-auth-page">
+ 
+  <!-- =============== NAVBAR ========================-->
+  <nav class="navbar navbar-expand-lg amazon-top-nav">
+    <div class="container-fluid px-4">
+
+       <!-- Logo -->
+      <a class="navbar-brand fw-bold text-white d-flex align-items-center" href="/user/products">
+    <i class="bi bi-basket-fill me-2 brand-icon"></i>
+    SmartCart
+</a>
+
+
+      <!-- Toggle Button (Mobile) -->
+      <button class="navbar-toggler custom-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+
+
+      <!-- Collapsible Content -->
+      <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3 mt-3 mt-lg-0 text-center text-lg-start">
+
+  <li class="nav-item">
+    <a href="/user/products" class="nav-link text-white fw-semibold">
+      <i class="bi bi-box-seam-fill me-1"></i> Products
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a href="/" class="btn btn-light btn-sm text-primary fw-semibold mt-2 mt-lg-0">
+      Login
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a href="/user-register" class="btn btn-outline-light btn-sm fw-semibold mt-2 mt-lg-0">
+      Register
+    </a>
+  </li>
+
+</ul>
+
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================ MAIN CONTENT =======================  -->
+  <div class="main-content">
+    
+<div class="auth-card">  
+<h2 class="text-center mb-4 fw-semibold">Create Account ✨</h2>
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <div class="flash-wrapper">
+  {% for category, message in messages %}
+  <div class="flash {{ category }}">
+  {% if category == 'danger' %}
+    <i class="bi bi-exclamation-circle me-2"></i>
+  {% elif category == 'success' %}
+    <i class="bi bi-check-circle me-2"></i>
+  {% endif %}
+  {{ message }}
+</div>
+
+  {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+<form method="POST" action="/user-register">
+
+    <div class="mb-3">
+  <label class="form-label">Name</label>
+  <input type="text" name="name" class="form-control" required>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Email</label>
+  <input type="email" name="email" class="form-control" required>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Password</label>
+  <input type="password" name="password" class="form-control" required>
+</div>
+
+    <button type="submit" class="auth-btn">Register</button>
+</form>
+
+<a href="/" class="auth-link">Already have an account? <strong>Login</strong></a>
+</div> 
+</div>
+
+ <!-- Footer section -->
+
+  
+  <footer class="footer py-2">
+  <div class="container text-center text-white">
+
+    <div class="mb-2">
+      <strong>SmartCart</strong> – Your Smart Shopping Partner
+    </div>
+
+    <!-- <div class="footer-links mb-2">
+      <a href="#" class="footer-link">About</a>
+      <a href="#" class="footer-link">Contact</a>
+      <a href="#" class="footer-link">Privacy Policy</a>
+    </div> -->
+
+    <div class="small">
+      © 2026 Harshitha Adicherla | All Rights Reserved
+    </div>
+
+  </div>
+</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+
+</body>
+</html>

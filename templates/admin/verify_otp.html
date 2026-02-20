@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Verify OTP</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <style>
+
+    footer h4 {
+      font-size: 0.8rem;
+      margin-bottom: 0;
+      padding: 8px;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+    }
+
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+    }
+    /* =========================
+   HERO BACKGROUND
+========================= */
+.hero-section {
+    flex: 1;
+    background: url('/static/images/background-img.jpg') center center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 15px;
+}
+
+/* ===== ADMIN CENTER PAGES ===== */
+.admin-center {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Center main content area */
+.admin-center .main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* FOOTER */
+    .footer {
+      background: #3f3fdc;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  width: 100vw;
+  margin: 0;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+    }
+</style>
+</head>
+
+<body class="admin-center">
+ 
+  <!-- ================ MAIN CONTENT =======================  -->
+<div class="hero-section">
+
+<div class="website-card form-card">
+  <h2>Verify OTP</h2>
+
+  <form method="POST" action="/verify-otp">
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+      {% for category, message in messages %}
+      <div class="flash {{ category }}">
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <label>Enter OTP</label>
+    <input type="text" name="otp" placeholder="6-digit OTP" required>
+
+    <label>Create Password</label>
+
+    <div class="password-group">
+      <input type="password" name="password" id="password" placeholder="Enter password" required>
+
+      <span class="toggle-password" onclick="togglePassword()">
+        Show
+      </span>
+    </div>
+
+    <small class="password-hint">
+      Minimum 8 characters
+    </small>
+
+    <button type="submit" class="card-btn primary-btn">Verify & Register</button>
+  </form>
+</div>
+
+  
+
+</body>
+
+</html>

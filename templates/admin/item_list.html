@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Bootstrap icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <style>
+ /* Make full height layout */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+
+/* Wrapper takes full height */
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+/* Content should expand */
+.content {
+    flex: 1;
+    padding-top: 80px;  
+    padding-bottom: 40px;
+}
+
+    .product-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+    text-align: center;
+    background-color: #fff;
+    transition: 0.3s;
+    height: 100%;
+}
+
+
+    .product-card:hover {
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+        transform: translateY(-3px);
+    }
+
+    .product-card img {
+        width: 140px;
+        height: 100px;
+        object-fit: contain;
+        margin-bottom: 10px;
+    }
+
+    .product-card h3 {
+        margin: 5px 0;
+        font-size: 18px;
+    }
+
+    .product-card p {
+        margin: 2px 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .product-card a {
+        display: inline-block;
+        margin-top: 8px;
+        background-color: #007bff;
+        padding: 8px 12px;
+        border-radius: 5px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .product-card a:hover {
+        background-color: #0056b3;    
+    }
+
+    .products-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+    .dashboard {
+      text-decoration: none;
+    }
+
+    .dashboard:hover {
+      text-decoration: underline;
+    }
+
+    .cart {
+      text-decoration: none;
+    }
+
+    .cart:hover {
+      text-decoration: underline;
+    }
+
+    .order {
+      text-decoration: none;
+    }
+
+    .order:hover {
+      text-decoration: underline;
+    }
+/* Navbar */
+.navbar {
+    background: #3f3fdc;
+}
+  /* Footer styling */
+.footer {
+    background: #3f3fdc;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  width: 100vw;
+  margin: 0;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.admin-item-list{
+    background: rgb(220, 234, 247);
+}
+
+/* Remove border */
+.navbar-toggler {
+    border: none !important;
+    transition: background-color 0.3s ease;
+    padding: 6px 10px;
+    border-radius: 6px;   /* Slight rounded look */
+}
+
+/* Remove blue outline */
+.navbar-toggler:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Default icon color (dark) */
+.custom-toggler .navbar-toggler-icon {
+    filter: invert(28%) sepia(23%) saturate(800%) hue-rotate(100deg);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%232d6a4f' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* 🔥 When menu is open → background green */
+.custom-toggler[aria-expanded="true"] {
+    background-color: rgb(136, 157, 218);
+}
+
+/* When open → make icon white for contrast */
+.custom-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%231b4332' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+</style>
+
+</head>
+<body class="admin-item-list">
+   
+<div class="wrapper">
+
+<!-- =============== NAVBAR ========================-->
+<nav class="navbar navbar-expand-lg amazon-top-nav fixed-top">
+        <div class="container-fluid px-4">
+
+            <!-- Logo -->
+            <a class="navbar-brand fw-bold text-white" href="/admin/item-list">
+                SmartCart
+            </a>
+
+            <!-- Toggle Button (Mobile) -->
+            <button class="navbar-toggler custom-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+
+            <!-- Collapsible Content -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+
+                <ul class="navbar-nav align-items-lg-center gap-lg-3 mt-3 mt-lg-0">
+                    <!-- Dashboard -->
+                    <li class="nav-item">
+                        <a href="/admin-dashboard" class="nav-link text-white fw-semibold">
+                            Dashboard
+                        </a>
+                    </li>
+                    <!-- Products -->
+                    <li class="nav-item">
+                        <a href="/admin/item-list" class="nav-link text-white fw-semibold">
+                            <i class="bi bi-box-seam-fill"></i> Products
+                        </a>
+                    </li>
+
+                    <!-- Orders -->
+                    <li class="nav-item">
+                        <a href="/admin/add-item" class="nav-link text-white">
+                            <i class="bi bi-cart-plus-fill"></i> Add Product
+                        </a>
+                    </li>
+
+                    <!-- Logout -->
+                    <li class="nav-item">
+                        <a href="/admin-logout" class="btn btn-sm btn-danger rounded-2 ms-lg-2">
+                            Logout
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+<!-- ======================= Main ==================== -->
+<main class="content">
+
+<div class="admin-page">
+
+<h1 style="color: rgb(88, 2, 121);">Product List</h1>
+
+<br>
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <p style="color:green;">{{ message }}</p>
+  {% endfor %}
+{% endwith %}
+
+
+
+<!-- Search Form -->
+<!-- <form method="GET" action="/admin/item-list">
+    <input type="text" name="search" placeholder="Search product..."  
+           class="search-input"
+           value="{{ request.args.get('search', '') }}">
+    <button type="submit" class="search-btn">Search</button>
+</form>
+
+<br> -->
+
+<!-- Category Filter -->
+<!-- <form method="GET" action="/admin/item-list">
+    <select name="category" class="category-select">
+        <option value="">All Categories</option>
+
+        {% for cat in categories %}
+        <option value="{{ cat.category }}"
+            {% if request.args.get('category') == cat.category %} selected {% endif %}>
+            {{ cat.category }}
+        </option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="filter-btn">Filter</button>
+</form> -->
+
+<!-- Combined Search + Filter Form -->
+<form method="GET" action="/admin/item-list" class="search-filter-form">
+
+    <!-- Search -->
+    <input type="text" 
+           name="search" 
+           placeholder="Search product..."
+           class="search-input"
+           value="{{ request.args.get('search', '') }}">
+
+    <!-- Category -->
+    <select name="category" class="category-select">
+        <option value="">All Categories</option>
+
+        {% for cat in categories %}
+        <option value="{{ cat.category }}"
+            {% if request.args.get('category') == cat.category %} selected {% endif %}>
+            {{ cat.category }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <!-- Submit -->
+    <button type="submit" class="search-btn">Apply</button>
+
+</form>
+
+
+<br>
+
+<!-- <a href="/admin/add-item" class="add-product-btn">+ Add New Product</a>
+
+<a href="/admin-dashboard" class="add-product-btn">
+    ← Back to Dashboard
+</a> -->
+<hr>
+
+
+<table class="admin-table" border="1" cellpadding="10" >
+    <tr>
+        <th>ID</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>View</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+
+    {% for product in products %}
+    <tr>
+        <td>{{ loop.index }}</td>
+
+        <td>
+            <img src="/static/uploads/product_images/{{ product.image }}" 
+                 width="70" height="70">
+        </td>
+
+        <td>{{ product.name }}</td>
+        <td>{{ product.category }}</td>
+        <td>₹{{ product.price }}</td>
+
+        <td>
+            <a href="/admin/view-item/{{ product.product_id }}" 
+   class="admin-btn secondary">
+   View
+</a>
+        </td>
+    <td>
+    <a href="/admin/update-item/{{ product.product_id }}"
+       class="edit-btn">
+       Update
+    </a>
+</td>
+<td>
+     <a href="/admin/delete-item/{{ product.product_id }}"
+               class="delete-btn" 
+               onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+
+</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+</main>
+
+
+<!-- Footer section -->
+
+    <footer class="footer">
+        © 2026 Harshitha Adicherla | All Rights Reserved  
+    </footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+</body>
+</html>

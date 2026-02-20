@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+    <!-- Style.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+     
+    <!-- Bootstrap icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
+    <style>
+ /* Make full height layout */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+
+/* Wrapper takes full height */
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+/* Content should expand */
+.content {
+    flex: 1;
+    padding-top: 50px;  
+    padding-bottom: 50px;
+}
+
+    .product-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+    text-align: center;
+    background-color: #fff;
+    transition: 0.3s;
+    height: 100%;
+}
+
+
+    .product-card:hover {
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+        transform: translateY(-3px);
+    }
+
+    .product-card img {
+        width: 140px;
+        height: 100px;
+        object-fit: contain;
+        margin-bottom: 10px;
+    }
+
+    .product-card h3 {
+        margin: 5px 0;
+        font-size: 18px;
+    }
+
+    .product-card p {
+        margin: 2px 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .product-card a {
+        display: inline-block;
+        margin-top: 8px;
+        background-color: #007bff;
+        padding: 8px 12px;
+        border-radius: 5px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .product-card a:hover {
+        background-color: #0056b3;    
+    }
+
+    .products-hero {
+    background: rgba(0, 0, 0, 0.45);   /* Dark overlay */
+    backdrop-filter: blur(8px);       /* Glass effect */
+    padding: 40px 20px;
+    border-radius: 16px;
+    max-width: 800px;
+    margin: 120px auto 40px auto;  /* push below fixed navbar */
+    text-align: center;
+}
+
+.products-hero h2 {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 36px;
+    margin-bottom: 25px;
+}
+.bar {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.user-search-input,
+.user-category-select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    min-width: 200px;
+}
+
+.user-search-btn,
+.user-filter-btn {
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.user-search-btn:hover,
+.user-filter-btn:hover {
+    background: #27ae60;
+}
+    .dashboard {
+      text-decoration: none;
+    }
+
+    .dashboard:hover {
+      text-decoration: underline;
+    }
+
+    .cart {
+      text-decoration: none;
+    }
+
+    .cart:hover {
+      text-decoration: underline;
+    }
+
+    .order {
+      text-decoration: none;
+    }
+
+    .order:hover {
+      text-decoration: underline;
+    }
+/* Navbar */
+.navbar {
+    background: #3f3fdc;
+}
+  /* Footer styling */
+.footer {
+    background: #3f3fdc;
+  color: white;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 100vw;
+  margin-top: 30px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.footer-link {
+  color: rgba(255,255,255,0.75);
+  margin: 0 10px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.footer-links {
+  margin-bottom: 8px;
+}
+
+.footer-link:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.footer .small {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+hr{
+    color: white;
+}
+
+/* Remove border */
+.navbar-toggler {
+    border: none !important;
+    transition: background-color 0.3s ease;
+    padding: 6px 10px;
+    border-radius: 6px;   /* Slight rounded look */
+}
+
+/* Remove blue outline */
+.navbar-toggler:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Default icon color (dark) */
+.custom-toggler .navbar-toggler-icon {
+    filter: invert(28%) sepia(23%) saturate(800%) hue-rotate(100deg);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%232d6a4f' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* 🔥 When menu is open → background green */
+.custom-toggler[aria-expanded="true"] {
+    background-color: rgb(136, 157, 218);
+}
+
+/* When open → make icon white for contrast */
+.custom-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%231b4332' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.cart-badge {
+  background: #5f5fff;   
+  color: white;
+  font-size: 12px;
+  padding: 4px 7px;
+  border-radius: 50px;
+  margin-left: 6px;
+  font-weight: 600;
+}
+
+/* navbar brand and icon */
+.navbar-brand {
+  font-size: 22px;
+  letter-spacing: 0.5px;
+}
+
+.brand-icon {
+  font-size: 26px;
+  color: #ffcc4d;   /* softer gold */
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover .brand-icon {
+  transform: rotate(-10deg) scale(1.1);
+}
+</style>
+
+</head>
+<body class="user-products-page">
+<div class="wrapper">
+
+<!-- =============== NAVBAR ========================-->
+<nav class="navbar navbar-expand-lg amazon-top-nav fixed-top">
+        <div class="container-fluid px-4">
+
+            <!-- Logo -->
+      <a class="navbar-brand fw-bold text-white d-flex align-items-center" href="/user/products">
+    <i class="bi bi-basket-fill me-2 brand-icon"></i>
+    SmartCart
+</a>
+
+            <!-- Toggle Button (Mobile) -->
+            <button class="navbar-toggler custom-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+
+            <!-- Collapsible Content -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+
+                <ul class="navbar-nav align-items-lg-center gap-lg-3 mt-3 mt-lg-0">
+                    <!-- Dashboard -->
+                    <li class="nav-item">
+                        <a href="/user-dashboard" class="nav-link text-white fw-semibold">
+                            Dashboard
+                        </a>
+                    </li>
+                    <!-- Products -->
+          <li class="nav-item">
+            <a href="/user/products" class="nav-link text-white fw-semibold">
+              <i class="bi bi-box-seam-fill"></i> Products
+            </a>
+          </li>
+
+          <!-- Cart -->
+          <li class="nav-item">
+            <a href="/user/cart" class="nav-link text-white fw-semibold">
+              <i class="bi bi-cart-fill"></i> 
+              <span class="cart-text">Cart</span>
+              <span class="cart-badge ms-1">
+                {% set cart_key = 'cart_' ~ session.get('user_id') %}
+                {% set user_cart = session.get(cart_key, {}) %}
+                {{ user_cart|length }}
+              </span>
+            </a>
+          </li>
+
+          <!-- Orders -->
+          <li class="nav-item">
+            <a href="/user/my-orders" class="nav-link text-white">
+              <i class="bi bi-receipt"></i> My Orders
+            </a>
+          </li>
+
+          <!-- Logout -->
+          <li class="nav-item">
+            <a href="/user-logout" class="btn btn-sm btn-danger rounded-2 ms-lg-2">
+              Logout
+            </a>
+          </li>
+
+        </ul>
+
+            </div>
+        </div>
+    </nav>
+
+<!-- ======================= Main ==================== -->
+<div class="products-hero">
+
+<h2>All Products</h2>
+
+<div class="bar">
+<!-- Search Bar -->
+<form method="GET" action="/user/products" class="user-search-form">
+    <input type="text" name="search" placeholder="Search product..." class="user-search-input"
+           value="{{ request.args.get('search', '') }}">
+    <button type="submit" class="user-search-btn">Search</button>
+</form>
+
+<!-- <br> -->
+
+<!-- Category Filter -->
+<form method="GET" action="/user/products" class="user-filter-form">
+    <select name="category" class="user-category-select">
+        <option value="">All Categories</option>
+
+        {% for cat in categories %}
+        <option value="{{ cat.category }}"
+            {% if request.args.get('category') == cat.category %} selected {% endif %}>
+            {{ cat.category }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit" class="user-filter-btn">Filter</button>
+</form>
+</div>
+</div>
+
+<hr>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="cart-flash-wrapper">
+      {% for category, message in messages %}
+        <div class="cart-flash {{ category }}">
+            ✔ {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- Product Cards -->
+<div class="container">
+<div class="row g-4">
+{% for product in products %}
+<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+    <div class="product-card h-100">
+
+    <img src="/static/uploads/product_images/{{ product.image }}">
+
+    <h3>{{ product.name }}</h3>
+    <p>{{ product.category }}</p>
+    <p><strong>₹{{ product.price }}</strong></p>
+
+    <a href="/user/product/{{ product.product_id }}" class="product-view-btn">View Details</a>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+
+
+<!-- Footer section -->
+
+    <footer class="footer py-2">
+  <div class="container text-center text-white">
+
+    <div class="mb-2">
+      <strong>SmartCart</strong> – Your Smart Shopping Partner
+    </div>
+
+    <!-- <div class="footer-links mb-2">
+      <a href="#" class="footer-link">About</a>
+      <a href="#" class="footer-link">Contact</a>
+      <a href="#" class="footer-link">Privacy Policy</a>
+    </div> -->
+
+    <div class="small">
+      © 2026 Harshitha Adicherla | All Rights Reserved
+    </div>
+
+  </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+   
+</div>
+</body>
+</html>
