@@ -23,10 +23,9 @@ app.secret_key = config.SECRET_KEY
 
 
 # ================= SQLITE CONFIG =================
-DATABASE = "smartcart1.db"
 
 def get_db_connection():
-    conn = sqlite3.connect(DATABASE)
+    conn = sqlite3.connect("smartcart1.db")
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn

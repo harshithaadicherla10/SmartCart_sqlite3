@@ -1,28 +1,28 @@
 import sqlite3
 import os
 
-# Get the current project directory
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Database path
-db_path = os.path.join(BASE_DIR, "smartcart.db")
-
-# Schema file path
-schema_path = os.path.join(BASE_DIR, "schema.sql")
+DB_NAME = "smartcart1.db"   # Database name
 
 def init_db():
-    # Connect to SQLite (creates DB if not exists)
-    conn = sqlite3.connect(db_path)
-
-    # Read schema.sql and execute all SQL commands
-    with open(schema_path, "r", encoding="utf-8") as f:
+    # Connect to SQLite database
+    conn = sqlite3.connect(DB_NAME)
+    
+    # Enable foreign key support
+    conn.execute("PRAGMA foreign_keys = ON")
+    
+    # Execute schema file
+    with open("schema.sql", "r", encoding="utf-8") as f:
         conn.executescript(f.read())
-
+    
     conn.commit()
     conn.close()
+    
+    print("SmartCart database initialized successfully.")
 
-    print("Database created successfully using schema.sql!")
-
-# Run the function
 if __name__ == "__main__":
+    # Optional: remove old database during development
+    if os.path.exists(DB_NAME):
+        os.remove(DB_NAME)
+        print("Old smartcart database removed.")
+
     init_db()
