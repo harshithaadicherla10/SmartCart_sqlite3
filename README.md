@@ -143,8 +143,6 @@ http://127.0.0.1:5000/
 ![Payment Gateway](screenshots/payment_gateway.png)
 ### Order Confirmation
 ![Order Confirmation](screenshots/order_confirmation.png)
-### Order Summary
-![Order Summary](screenshots/order_summary.png)
 ### My Orders
 ![My Orders](screenshots/orders.png)
 
