@@ -179,6 +179,7 @@ http://127.0.0.1:5000/
 ## 👩‍💻 Author
 
 **Harshitha Adicherla**
+
 📩 harshithaadicherla03@gmail.com
 * GitHub: https://github.com/harshithaadicherla10
 * LinkedIn: https://linkedin.com/in/harshithaadicherla10
